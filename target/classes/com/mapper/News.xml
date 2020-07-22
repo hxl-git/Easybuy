@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.dao.NewsDao">
+ <!-- 查询所有新闻条数 -->
+ <select id="getTotalCount" resultType="int">
+ SELECT COUNT(`id`) FROM `easybuy_news` ;
+ </select>
+ 
+ <!-- 查询所有新闻信息 -->
+ <select id="queryNewsList" resultType="EasybuyNews">
+ SELECT * FROM `easybuy_news` ORDER BY `createTime` DESC LIMIT #{from} , #{rowCount};
+ </select>	
+ 
+ <!-- 根据id查询新闻详情 -->
+<select id="getNewsById" resultType="EasybuyNews">
+SELECT * FROM `easybuy_news` WHERE `id`=#{id} ;
+</select>
+ </mapper>  

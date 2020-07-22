@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.dao.EasybuyUserAddressDao">
+ <!-- 查询用户所有地址 -->
+ <select id="findEasybuyUserAddressAll" resultType="EasybuyUserAddress">
+ SELECT * FROM `easybuy_user_address` WHERE `userId`=#{userId};
+ </select>
+ 
+ <!-- 新增用户地址 -->
+ <insert id="updateEasybuyUserAddressById" parameterType="EasybuyUserAddress">
+ INSERT INTO `easybuy_user_address` (`address` , `createTime` ,`userId`,`isDefault` ,`remark`)
+ VALUES(#{address},#{createTime},#{userId},#{isDefault},#{remark});
+ </insert>	
+ 
+ <!-- 根据地址id获取地址信息 -->
+ <select id="getUserAddressById" resultType="EasybuyUserAddress">
+ SELECT * FROM `easybuy_user_address` WHERE `id`= #{id};
+ </select>
+ </mapper>  

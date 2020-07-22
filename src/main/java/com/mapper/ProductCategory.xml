@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.dao.ProductCategoryDao">
+ 	<!-- 一级分类 -->
+ 	<select id="findProductCategoryListOne"  resultType="EasybuyProductCategory">
+ 	SELECT * FROM easybuy_product_category WHERE `type`=1;
+ 	</select>
+ 	<!-- 二级分类 -->
+ 	<select id="findProductCategoryListTwo"  resultType="EasybuyProductCategory">
+ 	SELECT * FROM easybuy_product_category WHERE `type`=2;
+ 	</select>
+ 	<!-- 三级分类 -->
+ 	<select id="findProductCategoryListThree"  resultType="EasybuyProductCategory">
+ 	SELECT * FROM easybuy_product_category WHERE `type`=3;
+ 	</select>
+ 	<!-- 查询所有商品分类 -->
+ 	<select id="findEasybuyProductCategoryAll" resultType="EasybuyProductCategory">
+ 	SELECT * FROM `easybuy_product_category` LIMIT #{from} , #{rowCount};
+ 	</select>
+ 	<!-- 获取商品分类总记录数 -->
+ 	<select id="getTotalCount" resultType="int">
+ 	SELECT COUNT(id) FROM `easybuy_product_category`;
+ 	</select>
+ 	<!-- 父类id  分类id获取父类名称 -->
+	<select id="getParentName" resultType="String">
+	SELECT `name` FROM `easybuy_product_category` WHERE `id` = #{parentId};
+	</select>
+	<!-- 根据父分类查询商品分类信息 -->
+	<select id="getProductCategoryListByparentId" resultType="EasybuyProductCategory">
+	SELECT * FROM `easybuy_product_category` WHERE `parentId` = #{parentId} AND `type`= #{typeId};
+	</select>
+	
+	<!-- 根据id查询商品分类信息 -->
+	<select id="getProductCategoryById" resultType="EasybuyProductCategory">
+	SELECT * FROM `easybuy_product_category` WHERE `id` =#{id};
+	</select>
+	
+	<!-- 根据id删除分类 -->
+	<delete id="delEasybuyProductCategoryById">
+	DELETE FROM `easybuy_product_category` WHERE `id` = #{id};
+	</delete>
+	
+	<!-- 添加分类 -->
+	<insert id="insertEasybuyProductCategory" parameterType="EasybuyProductCategory">
+	INSERT INTO `easybuy__product_category` (`name`,`parentId`,`type`)
+	VALUE(#{name},#{parentId},#{type});
+	</insert>
+	
+	<!-- 根据删除分类的父类id查询外键是否有绑定商品 -->
+	<select id="findParentId" resultType="int">
+	SELECT COUNT(id) FROM `easybuy_product` WHERE `categoryLevel1` = #{id} OR `categoryLevel2`= #{id} OR `categoryLevel3`= #{id};
+	</select>
+	
+	<!-- 查询该分类下是否存在商品 -->
+	<select id="getProductById" resultType="int">
+	SELECT COUNT(id) FROM `easybuy_product` WHERE 1=1 
+	<if test="type=1">and `categoryLevel1` = #{id} </if>
+	<if test="type=2">and `categoryLevel2` = #{id} </if>
+	<if test="type=3">and `categoryLevel3` = #{id} </if>
+	;
+	</select>
+	
+ </mapper>  

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.dao.ProductDao">
+ 	<!-- 获取所有商品信息 -->
+ 	<select id="getEasybuyProductList" resultType="EasybuyProduct">
+ 		SELECT * FROM `easybuy_product`  WHERE `isDelete`= 0;
+ 	</select>
+ 
+ 		
+ 	<!-- 获取一级商品总条数 -->
+ 	<select id="getProductRowCount" resultType="int">
+ 	SELECT COUNT(`id`) FROM `easybuy_product` WHERE `categoryLevel1` = #{categoryId};
+ 	</select>
+ 	
+ 	<!-- 获取二级商品总条数 -->
+ 	<select id="getProductRowCount2" resultType="int">
+ 	SELECT COUNT(`id`) FROM `easybuy_product` WHERE `categoryLevel2` = #{categoryId};
+ 	</select>
+ 	
+ 	<!-- 获取三级商品总条数 -->
+ 	<select id="getProductRowCount3" resultType="int">
+ 	SELECT COUNT(`id`) FROM `easybuy_product` WHERE `categoryLevel3` = #{categoryId};
+ 	</select>
+ 	
+ 	
+ 	<!-- 获取一级商品全部信息 -->
+ 	<select id="getEasybuyProductListByCategoryId" resultType="EasybuyProduct">
+ 	SELECT * FROM `easybuy_product` WHERE `categoryLevel1` = #{categoryId} LIMIT #{from} , #{rowCount};
+ 	</select>
+ 	
+ 	<!-- 获取二级商品全部信息 -->
+ 	<select id="getEasybuyProductListByCategoryId2" resultType="EasybuyProduct">
+ 	SELECT * FROM `easybuy_product` WHERE `categoryLevel2` = #{categoryId} LIMIT #{from} , #{rowCount};
+ 	</select>
+ 	
+ 	<!-- 获取三级商品全部信息 -->
+ 	<select id="getEasybuyProductListByCategoryId3" resultType="EasybuyProduct">
+ 	SELECT * FROM `easybuy_product` WHERE `categoryLevel3` = #{categoryId} LIMIT #{from} , #{rowCount};
+ 	</select>
+ 	
+ 	<!-- 根据id查询对应商品信息 -->
+	<select id="findEasybuyProductById" resultType="EasybuyProduct">
+	SELECT * FROM `easybuy_product` WHERE `id`= #{id};
+	</select>
+	
+	<!-- 模糊查询总数 -->
+	<select id="getProductRowCountByName" resultType="int">
+	SELECT COUNT(id) FROM `easybuy_product`
+	<if test="name!=null and name !=''"> WHERE   `name` LIKE CONCAT('%',#{name},'%') </if>
+	;
+	</select>
+	<!-- 模糊查询 -->
+	<select id="getEasybuyProductListByCategoryName" resultType="EasybuyProduct">
+	SELECT * FROM `easybuy_product` 
+	<if test="name!=null and name !=''"> WHERE   `name` LIKE CONCAT('%',#{name},'%') </if>
+	LIMIT #{from} , #{rowCount};
+	</select>
+	
+	<!-- 查询用户收藏夹商品  -->
+	<select id="getEasybuyProductListByUser" resultType="EasybuyProduct">
+	SELECT * FROM `easybuy_product` WHERE `id` IN 
+	<foreach collection="list" item="list" open="(" separator="," close=")">
+		#{list.productId}
+	</foreach>
+	;
+	</select>
+	
+	<!-- 商品管理全部商品 -->
+	<select id="findEasybuyProductAll" resultType="EasybuyProduct">
+	SELECT * FROM `easybuy_product` LIMIT #{from} , #{rowCount};
+	</select>
+	
+	<!-- 获取全部商品记录数 -->
+	<select id="findTotalCount" resultType="int">
+	SELECT COUNT(id) FROM `easybuy_product`;
+	</select>
+	
+	<!-- 修改商品库存 -->
+	<update id="updateStock">
+	UPDATE `easybuy_product` SET `stock` = #{stock} WHERE `id`= #{id}; 
+	</update>
+	
+	<!-- 商品上架 / 修改商品信息 -->
+	<insert id="insertEasybuyProduct" parameterType="EasybuyProduct">
+	INSERT INTO `easybuy_product`(`name`,`description`,`price`,`stock`,`categoryLevel1`,`categoryLevel2`,
+	`categoryLevel3`,`fileName`,`isDelete`)
+	VALUES(#{name},#{description},#{price},#{stock},#{categoryLevel1},#{categoryLevel2},#{categoryLevel3},
+	#{fileName},#{isDelete}
+	);
+	</insert>
+	<update id="updateEasybuyProduct" parameterType="EasybuyProduct">
+	UPDATE `easybuy_product` 
+	<trim prefix="set" suffix="where" suffixOverrides=",">
+		<if test="name !=null"> `name`= #{name} ,</if>
+		<if test="description !=null">`description`=#{description},</if>
+		<if test="price !=null">`price`=#{price},</if>
+		<if test="stock !=null">`stock`=#{stock},</if>
+		<if test="categoryLevel1 !=null">`categoryLevel1`=#{categoryLevel1},</if>
+		<if test="categoryLevel2 !=null">`categoryLevel2`=#{categoryLevel2},</if>
+		<if test="categoryLevel3 !=null">`categoryLevel3`=#{categoryLevel3},</if>
+		<if test="fileName !=null">`fileName`=#{fileName},</if>
+		<if test="isDelete !=null">`isDelete`=#{isDelete},</if>
+	</trim>
+	`id` = #{id}
+	</update>
+	
+	
+	<!-- id删除商品 -->
+	<delete id="deleteEasybuyProductById">
+	DELETE FROM `easybuy_product` WHERE `id` = #{id};
+	</delete>
+ </mapper>  

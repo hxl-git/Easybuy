@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.dao.EasybuyCollectDao">
+ 	<!-- 收藏列表 信息 -->
+ 	<select id="select1" resultType="EasybuyCollect">
+ 	SELECT * FROM easybuy_collect;
+ 	</select>
+ 	
+ 	<!-- 添加收藏表 -->
+ 	<insert id="addCollect">
+ 	INSERT INTO `easybuy_collect`(`userId`,`productId`,`productNum`,`type`)
+ 	VALUES(#{userId},#{productId},#{productNum},#{type});
+ 	</insert>
+ 	
+ 	<!-- 删除收藏表 -->
+ 	<delete id="delCollect" parameterType="EasybuyCollect">
+ 	DELETE FROM `easybuy_collect` WHERE `userId`= #{userId} AND `productId`=#{productId} AND `type`=#{type} ;
+ 	</delete>
+ 	
+ 	<!-- 修改收藏表 -->
+ 	<update id="upCollect">
+ 	UPDATE `easybuy_collect` SET `productNum`=#{productNum}  WHERE `userId`=#{userId}  AND `productId`=#{productId} AND `type`=#{type} ;
+ 	</update>
+ </mapper>  

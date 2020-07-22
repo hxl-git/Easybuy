@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.dao.EasybuyUserDao">
+ 	
+ 	<!-- 根据用户名和密码查询对应信息  -->
+ 	<select id="findEasybuyUserInfo" resultType="EasybuyUser" parameterType="String">
+ 	SELECT * FROM easybuy_user WHERE loginName= #{loginName};
+ 	</select>
+ 	
+ 	<!-- 查询是否存在相同用户名 -->
+ 	<select id="findLoginNameByName" resultType="int" parameterType="String">
+ 	SELECT COUNT(id) FROM easybuy_user WHERE loginName= #{loginName};
+ 	</select>
+
+	<!-- 根据用户信息注册 -->
+	<insert id="addRegisterInfo"  useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="EasybuyUser">
+	INSERT INTO `easybuy_user`(`userName`,`loginName`,`password`,`sex`,`identityCode`,`email`,`mobile`,`type`)
+	VALUE(#{userName},#{loginName},#{password},#{sex},#{identityCode},#{email},#{mobile},#{type});
+	</insert>
+	
+	<!-- 查询用户总数 -->
+	<select id="getTotalCount" resultType="int">
+	SELECT COUNT(id) FROM `easybuy_user`;
+	</select>
+	
+	<!-- 查询所有用户 -->
+	<select id="findEasybuyUserAll" resultType="EasybuyUser">
+	SELECT * FROM `easybuy_user` LIMIT #{from} , #{rowCount};
+	</select>
+	
+	<!-- 根据用户Id修改用户信息 -->
+	<update id="modifyEasybuyUserById" parameterType="EasybuyUser">
+	UPDATE `easybuy_user` 
+	<trim prefix="set" suffix="where" suffixOverrides=",">
+	<if test="loginName !=null">`loginName` =#{loginName} ,</if>
+	<if test="userName !=null">`userName` = #{userName} ,</if>
+	<if test="password !=null">`password` = #{password} ,</if>
+	<if test="sex!=null">`sex` = #{sex} ,</if>
+	<if test="identityCode !=null ">`identityCode` = #{identityCode} ,</if>
+	<if test="email !=null">`email` = #{email} ,</if>
+	<if test="mobile !=null">`mobile` = #{mobile} , </if>
+	<if test="type != null">`type` = #{type} ,</if>
+	</trim>
+	 `id` = #{id} ;
+	</update>
+	
+	<!-- 根据用户id获取用户信息 -->
+ 	<select id="findEasybuyUserById" resultType="EasybuyUser">
+ 	SELECT * FROM `easybuy_user` WHERE `id` = #{userId};
+ 	</select>
+ 
+ </mapper>  
+ 

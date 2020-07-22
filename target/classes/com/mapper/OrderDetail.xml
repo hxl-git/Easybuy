@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.dao.OrderDetailDao">
+ <!-- 保存订单详情 -->
+ <insert id="saveOrderDetail" parameterType="EasybuyOrderDetail">
+ INSERT INTO `easybuy_order_detail` (`orderId`,`productId`,`quantity`,`cost`)
+ VALUES(#{orderId},#{productId},#{quantity},#{cost});
+ </insert>
+ 	
+ </mapper>  

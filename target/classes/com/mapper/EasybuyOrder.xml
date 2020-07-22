@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.dao.EasybuyOrderDao">
+ <!-- 根据用户id查询对应订单信息 -->
+ <select id="findEasybuyOrderList" resultType="EasybuyOrder">
+ SELECT * FROM `easybuy_order` WHERE `userId` = #{userId} LIMIT #{from} , #{rowCount};
+ </select>	
+ 
+ <!-- 查询所有订单信息 -->
+<select id="allEasyBuyOrderList" resultType="EasybuyOrder">
+SELECT * FROM `easybuy_order` LIMIT #{from} , #{rowCount};
+</select>
+
+<!-- 获取订单总数 -->
+<select id="getTotalCount" resultType="int">
+SELECT COUNT(id) FROM `easybuy_order`;
+</select>
+
+<!-- 获取用户订单总数 -->
+<select id="findUserByIdOrder" resultType="int">
+SELECT COUNT(id) FROM `easybuy_order` WHERE `userId` =#{userId};
+</select>
+ </mapper>  
